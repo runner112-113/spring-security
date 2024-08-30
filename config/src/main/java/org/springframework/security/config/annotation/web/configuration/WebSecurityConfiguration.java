@@ -105,6 +105,7 @@ public class WebSecurityConfiguration implements ImportAware, BeanClassLoaderAwa
 	public Filter springSecurityFilterChain() throws Exception {
 		boolean hasFilterChain = !this.securityFilterChains.isEmpty();
 		if (!hasFilterChain) {
+			// 添加默认的SecurityFilterChain
 			this.webSecurity.addSecurityFilterChainBuilder(() -> {
 				this.httpSecurity.authorizeHttpRequests((authorize) -> authorize.anyRequest().authenticated());
 				this.httpSecurity.formLogin(Customizer.withDefaults());
@@ -146,6 +147,7 @@ public class WebSecurityConfiguration implements ImportAware, BeanClassLoaderAwa
 	@Autowired(required = false)
 	public void setFilterChainProxySecurityConfigurer(ObjectPostProcessor<Object> objectPostProcessor,
 			ConfigurableListableBeanFactory beanFactory) throws Exception {
+		// 创建了WebSecurity
 		this.webSecurity = objectPostProcessor.postProcess(new WebSecurity(objectPostProcessor));
 		if (this.debugEnabled != null) {
 			this.webSecurity.debug(this.debugEnabled);
@@ -166,7 +168,7 @@ public class WebSecurityConfiguration implements ImportAware, BeanClassLoaderAwa
 			previousOrder = order;
 			previousConfig = config;
 		}
-		// 触发WebSecurityConfigurer的自定义逻辑
+		// 添加所有的SecurityConfigurer到configures中
 		for (SecurityConfigurer<Filter, WebSecurity> webSecurityConfigurer : webSecurityConfigurers) {
 			this.webSecurity.apply(webSecurityConfigurer);
 		}

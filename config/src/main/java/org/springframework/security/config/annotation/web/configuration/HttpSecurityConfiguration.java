@@ -113,6 +113,7 @@ class HttpSecurityConfiguration {
 		WebAsyncManagerIntegrationFilter webAsyncManagerIntegrationFilter = new WebAsyncManagerIntegrationFilter();
 		webAsyncManagerIntegrationFilter.setSecurityContextHolderStrategy(this.securityContextHolderStrategy);
 		// @formatter:off
+		// 默认配置
 		http
 			.csrf(withDefaults())
 			.addFilter(webAsyncManagerIntegrationFilter)

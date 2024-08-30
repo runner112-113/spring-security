@@ -298,6 +298,7 @@ public final class WebSecurity extends AbstractConfiguredSecurityBuilder<Filter,
 				.add(getRequestMatcherPrivilegeEvaluatorsEntry(securityFilterChain));
 		}
 		boolean anyRequestConfigured = false;
+		// 构建所有的SecurityFilterChain
 		for (SecurityBuilder<? extends SecurityFilterChain> securityFilterChainBuilder : this.securityFilterChainBuilders) {
 			SecurityFilterChain securityFilterChain = securityFilterChainBuilder.build();
 			Assert.isTrue(!anyRequestConfigured,
@@ -317,6 +318,7 @@ public final class WebSecurity extends AbstractConfiguredSecurityBuilder<Filter,
 			this.privilegeEvaluator = new RequestMatcherDelegatingWebInvocationPrivilegeEvaluator(
 					requestMatcherPrivilegeEvaluatorsEntries);
 		}
+		// 创建了FilterChainProxy
 		FilterChainProxy filterChainProxy = new FilterChainProxy(securityFilterChains);
 		if (this.httpFirewall != null) {
 			filterChainProxy.setFirewall(this.httpFirewall);
