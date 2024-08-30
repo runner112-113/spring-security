@@ -122,12 +122,14 @@ public abstract class AbstractAuthenticationProcessingFilter extends GenericFilt
 
 	protected AuthenticationDetailsSource<HttpServletRequest, ?> authenticationDetailsSource = new WebAuthenticationDetailsSource();
 
+	// 核心认证逻辑
 	private AuthenticationManager authenticationManager;
 
 	protected MessageSourceAccessor messages = SpringSecurityMessageSource.getAccessor();
 
 	private RememberMeServices rememberMeServices = new NullRememberMeServices();
 
+	// 请求匹配
 	private RequestMatcher requiresAuthenticationRequestMatcher;
 
 	private boolean continueChainBeforeSuccessfulAuthentication = false;
@@ -238,6 +240,7 @@ public abstract class AbstractAuthenticationProcessingFilter extends GenericFilt
 			if (this.continueChainBeforeSuccessfulAuthentication) {
 				chain.doFilter(request, response);
 			}
+			// 成功认证的处理
 			successfulAuthentication(request, response, chain, authenticationResult);
 		}
 		catch (InternalAuthenticationServiceException failed) {
@@ -319,6 +322,8 @@ public abstract class AbstractAuthenticationProcessingFilter extends GenericFilt
 	 */
 	protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
 			Authentication authResult) throws IOException, ServletException {
+		// Authentication存储到SecurityContext
+		// 并将SecurityContext存储到SecurityContextRepository
 		SecurityContext context = this.securityContextHolderStrategy.createEmptyContext();
 		context.setAuthentication(authResult);
 		this.securityContextHolderStrategy.setContext(context);
@@ -326,10 +331,13 @@ public abstract class AbstractAuthenticationProcessingFilter extends GenericFilt
 		if (this.logger.isDebugEnabled()) {
 			this.logger.debug(LogMessage.format("Set SecurityContextHolder to %s", authResult));
 		}
+		// 触发RememberMe
 		this.rememberMeServices.loginSuccess(request, response, authResult);
+		// 发布InteractiveAuthenticationSuccessEvent事件
 		if (this.eventPublisher != null) {
 			this.eventPublisher.publishEvent(new InteractiveAuthenticationSuccessEvent(authResult, this.getClass()));
 		}
+		// AuthenticationSuccessHandler触发
 		this.successHandler.onAuthenticationSuccess(request, response, authResult);
 	}
 

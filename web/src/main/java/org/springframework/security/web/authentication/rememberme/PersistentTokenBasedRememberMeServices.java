@@ -121,6 +121,7 @@ public class PersistentTokenBasedRememberMeServices extends AbstractRememberMeSe
 		// *same* series number.
 		this.logger.debug(LogMessage.format("Refreshing persistent login token for user '%s', series '%s'",
 				token.getUsername(), token.getSeries()));
+		// 生成新的token
 		PersistentRememberMeToken newToken = new PersistentRememberMeToken(token.getUsername(), token.getSeries(),
 				generateTokenData(), new Date());
 		try {

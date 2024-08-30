@@ -3261,6 +3261,7 @@ public final class HttpSecurity extends AbstractConfiguredSecurityBuilder<Defaul
 		for (Filter filter : this.filters) {
 			sortedFilters.add(((OrderedFilter) filter).filter);
 		}
+		// 构建SecurityFilterChain
 		return new DefaultSecurityFilterChain(this.requestMatcher, sortedFilters);
 	}
 

@@ -115,6 +115,7 @@ public class WebSecurityConfiguration implements ImportAware, BeanClassLoaderAwa
 		for (SecurityFilterChain securityFilterChain : this.securityFilterChains) {
 			this.webSecurity.addSecurityFilterChainBuilder(() -> securityFilterChain);
 		}
+		// 触发自定义
 		for (WebSecurityCustomizer customizer : this.webSecurityCustomizers) {
 			customizer.customize(this.webSecurity);
 		}
@@ -149,6 +150,7 @@ public class WebSecurityConfiguration implements ImportAware, BeanClassLoaderAwa
 		if (this.debugEnabled != null) {
 			this.webSecurity.debug(this.debugEnabled);
 		}
+		// 获取所有WebSecurityConfigurer
 		List<SecurityConfigurer<Filter, WebSecurity>> webSecurityConfigurers = new AutowiredWebSecurityConfigurersIgnoreParents(
 				beanFactory)
 			.getWebSecurityConfigurers();
@@ -164,6 +166,7 @@ public class WebSecurityConfiguration implements ImportAware, BeanClassLoaderAwa
 			previousOrder = order;
 			previousConfig = config;
 		}
+		// 触发WebSecurityConfigurer的自定义逻辑
 		for (SecurityConfigurer<Filter, WebSecurity> webSecurityConfigurer : webSecurityConfigurers) {
 			this.webSecurity.apply(webSecurityConfigurer);
 		}

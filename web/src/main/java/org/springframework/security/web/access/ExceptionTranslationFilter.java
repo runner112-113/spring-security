@@ -194,6 +194,7 @@ public class ExceptionTranslationFilter extends GenericFilterBean implements Mes
 				logger.trace(LogMessage.format("Sending %s to authentication entry point since access is denied",
 						authentication), exception);
 			}
+			// 跳转登录页
 			sendStartAuthentication(request, response, chain,
 					new InsufficientAuthenticationException(
 							this.messages.getMessage("ExceptionTranslationFilter.insufficientAuthentication",

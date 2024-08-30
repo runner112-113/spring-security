@@ -47,6 +47,7 @@ public enum SessionCreationPolicy {
 	/**
 	 * Spring Security will never create an {@link HttpSession} and it will never use it
 	 * to obtain the {@link SecurityContext}
+	 * 每次请求都需要认证
 	 */
 	STATELESS
 

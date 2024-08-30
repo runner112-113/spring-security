@@ -94,6 +94,7 @@ public abstract class AbstractPreAuthenticatedProcessingFilter extends GenericFi
 
 	private ApplicationEventPublisher eventPublisher = null;
 
+	// 包含远程ip，sessionId等信息
 	private AuthenticationDetailsSource<HttpServletRequest, ?> authenticationDetailsSource = new WebAuthenticationDetailsSource();
 
 	private AuthenticationManager authenticationManager = null;

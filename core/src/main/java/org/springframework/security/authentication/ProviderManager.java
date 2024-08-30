@@ -93,12 +93,14 @@ public class ProviderManager implements AuthenticationManager, MessageSourceAwar
 
 	private AuthenticationEventPublisher eventPublisher = new NullEventPublisher();
 
+	// 认证方式的提供者
 	private List<AuthenticationProvider> providers = Collections.emptyList();
 
 	protected MessageSourceAccessor messages = SpringSecurityMessageSource.getAccessor();
 
 	private AuthenticationManager parent;
 
+	// 认证之后擦除凭证
 	private boolean eraseCredentialsAfterAuthentication = true;
 
 	/**
@@ -195,6 +197,7 @@ public class ProviderManager implements AuthenticationManager, MessageSourceAwar
 				lastException = ex;
 			}
 		}
+		// 最后尝试走AuthenticationManager来认证
 		if (result == null && this.parent != null) {
 			// Allow the parent to try.
 			try {

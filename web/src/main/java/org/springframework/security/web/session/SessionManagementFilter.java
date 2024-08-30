@@ -91,7 +91,9 @@ public class SessionManagementFilter extends GenericFilterBean {
 			chain.doFilter(request, response);
 			return;
 		}
+		// 防止多次进入
 		request.setAttribute(FILTER_APPLIED, Boolean.TRUE);
+		// 对应请求的SecurityContext不存在才会处理
 		if (!this.securityContextRepository.containsContext(request)) {
 			Authentication authentication = this.securityContextHolderStrategy.getContext().getAuthentication();
 			if (this.trustResolver.isAuthenticated(authentication)) {
@@ -116,6 +118,7 @@ public class SessionManagementFilter extends GenericFilterBean {
 			else {
 				// No security context or authentication present. Check for a session
 				// timeout
+				// 会话超时
 				if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
 					if (this.logger.isDebugEnabled()) {
 						this.logger.debug(LogMessage.format("Request requested invalid session id %s",
