@@ -34,6 +34,11 @@ public interface AuthorizationManager<T> {
 
 	/**
 	 * Determines if access should be granted for a specific authentication and object.
+	 *
+	 * Implementations are expected to return a positive AuthorizationDecision if access is granted,
+	 * negative AuthorizationDecision if access is denied,
+	 * and a null AuthorizationDecision when abstaining from making a decision.
+	 *
 	 * @param authentication the {@link Supplier} of the {@link Authentication} to check
 	 * @param object the {@link T} object to check
 	 * @throws AccessDeniedException if access is not granted
